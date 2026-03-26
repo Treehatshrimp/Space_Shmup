@@ -11,6 +11,7 @@ public class Main : MonoBehaviour
     public GameObject[] prefabEnemies; //Array of Enemy prefabs
     public float enemySpawnPerSecond = 0.5f;
     public float enemyInsetDefault = 1.5f; //Inset from the sides
+    public float gameRestartDelay = 2;
 
     private BoundsCheck bndCheck;
 
@@ -47,5 +48,20 @@ public class Main : MonoBehaviour
 
         //Invoke SpawnEnemy() again
         Invoke(nameof(SpawnEnemy), 1f / enemySpawnPerSecond);
+    }
+    void DelayedRestart()
+    {
+        //Invoke the Restart() method in gameRestartDelay seconds
+        Invoke(nameof(Restart), gameRestartDelay);
+    }
+    void Restart()
+    {
+        //Reload _Scene_0 to restart the game
+        //"_Scene_0 " below starts with 2 underscores and ends with a zero
+        SceneManager.LoadScene("__Scene_0");
+    }
+    static public void HERO_DIED()
+    {
+        S.DelayedRestart();
     }
 }
