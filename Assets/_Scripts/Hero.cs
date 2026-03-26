@@ -11,9 +11,7 @@ public class Hero : MonoBehaviour
     public float rollMult = -45;
     public float pitchMult = 30;
 
-    [Header("Dynamic")]
-    [Range(0, 4)]
-    [SerializeField]
+    [Header("Dynamic")][Range(0, 4)][SerializeField]
     private float _shieldLevel = 1;
     //public float shieldLevel = 1;
     [Tooltip("This field holds a referenece to the last triggering GameObject")]
@@ -51,7 +49,8 @@ public class Hero : MonoBehaviour
     {
         Transform rootT = other.gameObject.transform.root;
         GameObject go = rootT.gameObject;
-        // Debug.Log("Shield trigger hit by: " +go.gameObject.name);
+        //Debug.Log("Shield trigger hit by: " +go.gameObject.name);
+
         //Make sure it's not the same triggering go as last time
         if (go == lastTriggerGo) return;
         lastTriggerGo = go;
@@ -69,7 +68,7 @@ public class Hero : MonoBehaviour
     }
     public float shieldLevel
     {
-        get { return shieldLevel; }
+        get { return _shieldLevel; }
         private set 
         {
             _shieldLevel = Mathf.Min(value,4); 
