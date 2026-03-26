@@ -57,8 +57,8 @@ public class Hero : MonoBehaviour
         lastTriggerGo = go;
 
         Enemy enemy = go.GetComponent<Enemy>();
-        if (enemy == null)
-        { //If the shield was triggered by an enemy
+        if (enemy != null)//If the shield was triggered by an enemy
+        { 
             shieldLevel--; //Decrease the level of the shield by 1
             Destroy(go);
         }
