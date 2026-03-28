@@ -13,15 +13,21 @@ public class Hero : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 40;
 
-    [Header("Dynamic")][Range(0, 4)][SerializeField]
+    [Header("Dynamic")]
+    [Range(0, 4)]
+    [SerializeField]
     private float _shieldLevel = 1;
     //public float shieldLevel = 1;
     [Tooltip("This field holds a referenece to the last triggering GameObject")]
     private GameObject lastTriggerGo = null;
+    // declare a new delegate type WeaponFireDelegate
+    public delegate void WeaponFireDelegate();
+    // Create a WeaponFireDelegate event named fireEvent
+    public event WeaponFireDelegate fireEvent;
 
     private void Awake()
     {
-        if(S == null)
+        if (S == null)
         {
             S = this; //Set Singleton only if null
         }
@@ -29,6 +35,7 @@ public class Hero : MonoBehaviour
         {
             Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");
         }
+        // fireEvent += TempFire;
     }
 
     // Update is called once per frame
@@ -48,19 +55,29 @@ public class Hero : MonoBehaviour
         transform.rotation = Quaternion.Euler(vAxis * pitchMult, hAxis * rollMult, 0);
 
         //Allow the ship to fire
-        if(Input.GetKeyDown(KeyCode.Space))
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    TempFire();
+        //}
+        // use the fireEVent to fire weapons when the spacebar is pressed.
+        if (Input.GetAxis("Jump") == 1 && fireEvent != null)
         {
-            TempFire();
+            fireEvent();
         }
     }
 
-    void TempFire()
-    {
-        GameObject projGO = Instantiate<GameObject>(projectilePrefab);
-        projGO.transform.position = transform.position;
-        Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
-        rigidB.velocity = Vector3.up * projectileSpeed;
-    }
+    // void TempFire()
+    // {
+    //     GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+    //     projGO.transform.position = transform.position;
+    //     Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
+    //     // rigidB.velocity = Vector3.up * projectileSpeed;
+
+    //     ProjectileHero proj = projGO.GetComponent<ProjectileHero>();
+    //     proj.type = eWeaponType.blaster;
+    //     float tSpeed = Main.GET_WEAPON_DEFINITION(proj.type).velocity;
+    //     rigidB.velocity = Vector3.up * tSpeed;
+    // }
     private void OnTriggerEnter(Collider other)
     {
         Transform rootT = other.gameObject.transform.root;
@@ -73,23 +90,23 @@ public class Hero : MonoBehaviour
 
         Enemy enemy = go.GetComponent<Enemy>();
         if (enemy != null)//If the shield was triggered by an enemy
-        { 
+        {
             shieldLevel--; //Decrease the level of the shield by 1
             Destroy(go);
         }
-        else 
+        else
         {
-            Debug.LogWarning("Shield trigger by non-Enemy: "+go.name);
+            Debug.LogWarning("Shield trigger by non-Enemy: " + go.name);
         }
     }
     public float shieldLevel
     {
         get { return _shieldLevel; }
-        private set 
+        private set
         {
-            _shieldLevel = Mathf.Min(value,4); 
+            _shieldLevel = Mathf.Min(value, 4);
             //If the shield is going to be set to less than zero...
-            if(value <0)
+            if (value < 0)
             {
                 Destroy(this.gameObject);//Destoy the Hero
                 Main.HERO_DIED();
