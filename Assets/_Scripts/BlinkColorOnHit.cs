@@ -6,14 +6,15 @@ using UnityEngine;
 public class BlinkColorOnHit : MonoBehaviour
 {
     private static float blinkDuration = 0.1f;  // # of seconds to show damage
-    //private static Color blinkColor = Color.red;
+    // private static Color blinkColor = Color.red; // this was here from book
+    // i wanted to be able to change the color for each enemy in the inspector
+    // mostly for debugging but this is now not needed
 
     [Header("Dynamic")]
     public bool showingColor = false;
-    public float blinkCompleteTime; // time to stop show damage
-    public Color blinkColor = Color.red;
-
-    private Material[] materials;   // time to stpo showing the color
+    public float blinkCompleteTime;         // time to stop show damage
+    public Color blinkColor = Color.red;    // color is now set in inspector
+    private Material[] materials;           // time to stpo showing the color
     private Color[] originalColors;
     private BoundsCheck bndCheck;
 

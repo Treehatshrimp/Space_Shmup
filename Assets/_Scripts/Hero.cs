@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
-    static public Hero S { get; private set; }//Singleton
+    static public Hero S { get; private set; }// Singleton
     [Header("Inscribed")]
-    //Control movement of ship
+    // Control movement of ship
     public float speed = 30;
     public float rollMult = -45;
     public float pitchMult = 30;
@@ -17,7 +17,7 @@ public class Hero : MonoBehaviour
     [Range(0, 4)]
     [SerializeField]
     private float _shieldLevel = 1;
-    //public float shieldLevel = 1;
+    // public float shieldLevel = 1;
     [Tooltip("This field holds a referenece to the last triggering GameObject")]
     private GameObject lastTriggerGo = null;
     // declare a new delegate type WeaponFireDelegate
@@ -29,7 +29,7 @@ public class Hero : MonoBehaviour
     {
         if (S == null)
         {
-            S = this; //Set Singleton only if null
+            S = this;   // Set Singleton only if null
         }
         else
         {
@@ -41,24 +41,24 @@ public class Hero : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Pull info from the Input class
+        // Pull info from the Input class
         float hAxis = Input.GetAxis("Horizontal");
         float vAxis = Input.GetAxis("Vertical");
 
-        //Change transform.position based on the axes
+        // Change transform.position based on the axes
         Vector3 pos = transform.position;
         pos.x += hAxis * speed * Time.deltaTime;
         pos.y += vAxis * speed * Time.deltaTime;
         transform.position = pos;
 
-        //Rotate the ship to make it feel more dynamic
+        // Rotate the ship to make it feel more dynamic
         transform.rotation = Quaternion.Euler(vAxis * pitchMult, hAxis * rollMult, 0);
 
-        //Allow the ship to fire
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
+        // Allow the ship to fire
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
         //    TempFire();
-        //}
+        // }
         // use the fireEVent to fire weapons when the spacebar is pressed.
         if (Input.GetAxis("Jump") == 1 && fireEvent != null)
         {
@@ -82,16 +82,16 @@ public class Hero : MonoBehaviour
     {
         Transform rootT = other.gameObject.transform.root;
         GameObject go = rootT.gameObject;
-        //Debug.Log("Shield trigger hit by: " +go.gameObject.name);
+        // Debug.Log("Shield trigger hit by: " +go.gameObject.name);
 
-        //Make sure it's not the same triggering go as last time
+        // Make sure it's not the same triggering go as last time
         if (go == lastTriggerGo) return;
         lastTriggerGo = go;
 
         Enemy enemy = go.GetComponent<Enemy>();
-        if (enemy != null)//If the shield was triggered by an enemy
+        if (enemy != null)  // If the shield was triggered by an enemy
         {
-            shieldLevel--; //Decrease the level of the shield by 1
+            shieldLevel--;  // Decrease the level of the shield by 1
             Destroy(go);
         }
         else
@@ -105,10 +105,10 @@ public class Hero : MonoBehaviour
         private set
         {
             _shieldLevel = Mathf.Min(value, 4);
-            //If the shield is going to be set to less than zero...
+            // If the shield is going to be set to less than zero...
             if (value < 0)
             {
-                Destroy(this.gameObject);//Destoy the Hero
+                Destroy(this.gameObject);   // Destoy the Hero
                 Main.HERO_DIED();
             }
         }

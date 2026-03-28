@@ -7,17 +7,17 @@ using UnityEngine.Scripting.APIUpdating;
 public class Enemy : MonoBehaviour
 {
     [Header("Inscribed")]
-    public float speed = 10f; //Movement
-    public float fireRate = 0.3f; //Seconds/shot
+    public float speed = 10f; // Movement
+    public float fireRate = 0.3f; // Seconds/shot
     public float health = 10;
-    public int score = 100; //Points earned for destroying
+    public int score = 100; // Points earned for destroying
 
     protected BoundsCheck bndCheck;
     private void Awake()
     {
         bndCheck = GetComponent<BoundsCheck>();
     }
-    //Property: a method that acts like a field
+    // Property: a method that acts like a field
     public Vector3 pos
     {
         get
@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Move();
-        //Check whether this Enemy has gone off the bottom of the screen
+        // Check whether this Enemy has gone off the bottom of the screen
         if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offDown))
         {
             Destroy(gameObject);

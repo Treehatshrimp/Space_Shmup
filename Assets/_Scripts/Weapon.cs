@@ -8,13 +8,13 @@ using UnityEngine;
 /// </summary>
 public enum eWeaponType
 {
-    none, // the defualt / no weapon
-    blaster, // a simple blaster
-    spread, // mutple shots simultaneously
-    phaser, // [NI] shots that move in waves
-    missile, // [NI] homing missiles
-    laser, // [NI]f Damge over time
-    shield // raise shieldLevel
+    none,       // the defualt / no weapon
+    blaster,    // a simple blaster
+    spread,     // mutple shots simultaneously
+    phaser,     // [NI] shots that move in waves
+    missile,    // [NI] homing missiles
+    laser,      // [NI]f Damge over time
+    shield      // raise shieldLevel
 }
 
 /// <summary>
@@ -57,7 +57,7 @@ public class Weapon : MonoBehaviour
     [Tooltip("Setting this manually while playing does not work properly.")]
     private eWeaponType _type = eWeaponType.none;
     public WeaponDefinition def;
-    public float nextShotTime;     // tiume the weapon will fire next
+    public float nextShotTime;     // time the weapon will fire next
 
     private GameObject weaponModel;
     private Transform shotPointTrans;
