@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -5195556023717075596}
   - component: {fileID: -4199602404767528645}
   - component: {fileID: 1234518451399743915}
+  - component: {fileID: -5927720451015727039}
   m_Layer: 9
   m_Name: Enemy_1
   m_TagString: Untagged
@@ -88,6 +89,21 @@ MonoBehaviour:
   waveFrequency: 2
   waveWidth: 4
   waveRotY: 45
+--- !u!114 &-5927720451015727039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3319825933102930435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770e96016415b0b4dbab9eee965c390e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showingColor: 0
+  blinkCompleteTime: 0
+  blinkColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1001 &5065028546169738789
 PrefabInstance:
   m_ObjectHideFlags: 0
