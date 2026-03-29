@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; //Enables the loading and reloading of scenes
+using UnityEngine.UI; // for score count
 
 public class Main : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class Main : MonoBehaviour
     {
         eWeaponType.blaster, eWeaponType.blaster, eWeaponType.spread, eWeaponType.shield
     };
+
+    public Text scoreText; // UI assign
+    private int score = 0;
 
     private BoundsCheck bndCheck;
 
@@ -86,6 +90,12 @@ public class Main : MonoBehaviour
         S.DelayedRestart();
     }
 
+    void UpdateScore(int points)
+    {
+        score += points;
+        scoreText.text = "Score: " + score;
+    }
+
     /// <summary>
     /// Static function that gets a WeaponDefinition from the WEAP_DICT sttatic
     /// protected feild of the main class
@@ -105,8 +115,10 @@ public class Main : MonoBehaviour
     static public void SHIP_DESTROYED(Enemy e)
     {
         //Potentially generate a PowerUp
-        if(Random.value <= e.powerUpDropChance)
+        if (Random.value <= e.powerUpDropChance)
         {
+
+            S.UpdateScore(e.score);
             //Choose a powerUp from te possibilities in powerUpFrequency
             int ndx = Random.Range(0, S.powerUpFrequency.Length);
             eWeaponType pUpType = S.powerUpFrequency[ndx];
