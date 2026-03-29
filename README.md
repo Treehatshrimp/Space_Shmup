@@ -2,7 +2,7 @@
 
 ## Project 3
 
-Team Mebers: Ryland Tanner, first last
+Team Mebers: Ryland Tanner, Jason Jiang
 
 ---
 
