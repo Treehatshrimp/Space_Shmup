@@ -5,19 +5,64 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyShield))]
 public class Enemy_4 : Enemy
 {
+    [Header("Enemy_4 Inscribed Fields")]
+    public float duration = 4;  // duration of interpolation movement
     private EnemyShield[] allShields;
     private EnemyShield thisShield;
+
+    private Vector3 p0, p1;  // the two points to interpolate
+    private float timeStart;    // birth time for this enemy_4
 
     void Start()
     {
         allShields = GetComponentsInChildren<EnemyShield>();
         thisShield = GetComponent<EnemyShield>();
+
+        // initaly set p0 & p1 to current position from main spawn emeny
+        p0 = p1 = pos;
+        InitMovement();
+    }
+
+    void InitMovement()
+    {
+        p0 = p1;    // set p0 ot the old p1
+        //assign a new on screen location to p1
+        float widMinRad = bndCheck.camWidth - bndCheck.radius;
+        float hgtMinRad = bndCheck.camHeight - bndCheck.radius;
+        p1.x = Random.Range(-widMinRad, widMinRad);
+        p1.y = Random.Range(-hgtMinRad, hgtMinRad);
+
+        // make sure that it moves to a diffrent quadrant of the screen
+        if (p0.x * p1.x > 0 && p0.y * p1.y > 0)
+        {
+            if (Mathf.Abs(p0.x) > Mathf.Abs(p0.y))
+            {
+                p1.x *= -1;
+            }
+            else
+            {
+                p1.y *= -1;
+            }
+        }
+
+        // reset the time
+        timeStart = Time.time;
     }
 
     public override void Move()
     {
-        //  we will add much more here later for now we will test
-        // without enemny movement
+        // this completly overrides emeny move with a linear interpolation
+        float u = (Time.time - timeStart) / duration;
+
+        if (u >= 1)
+        {
+            InitMovement();
+            u = 0;
+        }
+
+        u = u - 0.15f * Mathf.Sin(u * 2 * Mathf.PI); //easing sine -0.15
+        pos = (1 - u) * p0 + u * p1;  // simple linear interpolation
+
     }
 
     /// <summary>
