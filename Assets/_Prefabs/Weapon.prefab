@@ -89,3 +89,5 @@ MonoBehaviour:
     delayBetweenShots: 0
     velocity: 50
   nextShotTime: 0
+  audioSource: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: fcd9f4c621037cd4fad08c71ec324728, type: 3}

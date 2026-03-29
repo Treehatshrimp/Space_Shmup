@@ -38,6 +38,8 @@ public class WeaponDefinition
     public Color projectileColor = Color.white;
     [Tooltip("Damage cuasedwhen a single projectile hits an enemy")]
     public float damageOnHit = 0;
+    [Tooltip("Audio played when shot is fired")]
+    public AudioClip shootClip;
 
 
     [Tooltip("Damage cuased per second by the laser  [Not Implemented]")]
@@ -61,6 +63,8 @@ public class Weapon : MonoBehaviour
 
     private GameObject weaponModel;
     private Transform shotPointTrans;
+    public AudioSource audioSource;
+    public AudioClip shootClip;
 
     void Start()
     {
@@ -79,6 +83,7 @@ public class Weapon : MonoBehaviour
         // find the fireEvent of a Hero Component in the parent hierarchy
         Hero hero = GetComponentInParent<Hero>();
         if (hero != null) hero.fireEvent += Fire;
+        audioSource = hero.GetComponent<AudioSource>();
     }
 
     public eWeaponType type
@@ -101,6 +106,7 @@ public class Weapon : MonoBehaviour
         }
         // get the weapon def for this type from main
         def = Main.GET_WEAPON_DEFINITION(_type);
+        shootClip = def.shootClip;
         //Destroy any old model and then attach a model for this weapon
         if (weaponModel != null) Destroy(weaponModel);
         weaponModel = Instantiate<GameObject>(def.weaponModelPrefab, transform);
@@ -141,6 +147,25 @@ public class Weapon : MonoBehaviour
 
 
         }
+        PlayShootSound();
+    }
+
+    void PlayShootSound()
+    {
+        if (audioSource != null && shootClip != null)
+        {
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(shootClip);
+            Debug.Log("Played Audio Via Weapon.cs");
+        }
+        else if (audioSource == null)
+        {
+            Debug.Log("audioSource is null via Weapon.cs");
+        }
+        else if (shootClip == null)
+        {
+            Debug.Log("shootClip is null via Weapon.cs");
+        }
     }
 
     private ProjectileHero MakeProjectile()
@@ -155,6 +180,9 @@ public class Weapon : MonoBehaviour
 
         p.type = type;
         nextShotTime = Time.time + def.delayBetweenShots;
+
+
+
         return (p);
     }
 }

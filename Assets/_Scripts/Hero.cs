@@ -13,6 +13,8 @@ public class Hero : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 40;
     public Weapon[] weapons;
+    public AudioSource audioSource;
+    public AudioClip shootClip;
 
     [Header("Dynamic")]
     [Range(0, 4)]
@@ -37,11 +39,13 @@ public class Hero : MonoBehaviour
             Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");
         }
         // fireEvent += TempFire;
-        
+        // fireEvent += PlayShootSound;
+
         //Reset the weapons to start _Hero with 1 blaster
         ClearWeapons();
         weapons[0].SetType(eWeaponType.blaster);
     }
+
 
     // Update is called once per frame
     void Update()
@@ -68,6 +72,15 @@ public class Hero : MonoBehaviour
         if (Input.GetAxis("Jump") == 1 && fireEvent != null)
         {
             fireEvent();
+        }
+    }
+
+    void PlayShootSound()
+    {
+        if (audioSource != null && shootClip != null)
+        {
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(shootClip);
         }
     }
 
@@ -100,10 +113,10 @@ public class Hero : MonoBehaviour
             shieldLevel--;  // Decrease the level of the shield by 1
             Destroy(go);
         }
-        else if(pUp != null)
+        else if (pUp != null)
         {
             //If the shield hit a PowerUp
-            AbsorbPowerUp(pUp); 
+            AbsorbPowerUp(pUp);
         }
         else
         {
@@ -113,27 +126,27 @@ public class Hero : MonoBehaviour
     public void AbsorbPowerUp(PowerUp pUp)
     {
         Debug.Log("Absorbed PowerUp: " + pUp.type);
-        switch(pUp.type)
+        switch (pUp.type)
         {
             case eWeaponType.shield:
-            shieldLevel++;
-            break;
+                shieldLevel++;
+                break;
 
             default:
-            if(pUp.type == weapons[0].type) //if same type
+                if (pUp.type == weapons[0].type) //if same type
                 {
                     Weapon weap = GetEmptyWeaponSlot();
-                    if(weap != null)
+                    if (weap != null)
                     {
                         weap.SetType(pUp.type);
                     }
                 }
-            else //if different weapon type
+                else //if different weapon type
                 {
                     ClearWeapons();
                     weapons[0].SetType(pUp.type);
                 }
-            break;
+                break;
         }
         pUp.AbsorbedBy(this.gameObject);
     }
@@ -157,21 +170,21 @@ public class Hero : MonoBehaviour
     /// <returns> the first empty Weapon slot or null if none are empty<returns>
     Weapon GetEmptyWeaponSlot()
     {
-        for(int i = 0;i<weapons.Length;i++)
+        for (int i = 0; i < weapons.Length; i++)
         {
-            if(weapons[i].type == eWeaponType.none)
+            if (weapons[i].type == eWeaponType.none)
             {
-                return(weapons[i]);
+                return (weapons[i]);
             }
         }
-        return(null);
+        return (null);
     }
     ///<summary>
     /// Sets the type of all Weapon slots to none
     /// </summary>
     void ClearWeapons()
     {
-        foreach(Weapon w in weapons)
+        foreach (Weapon w in weapons)
         {
             w.SetType(eWeaponType.none);
         }
